@@ -16,9 +16,6 @@ export default function Home() {
   const { chats, printMessage, addUserMessage, addDerbyMessage } = chatlogHandlers();
   const { checkConnection } = postHandlers();
 
-  console.log('hello')
-  checkConnection()
-
   return (
     <div className={styles.page}>
       <main className={styles.main}>
