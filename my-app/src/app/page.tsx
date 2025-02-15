@@ -14,7 +14,9 @@ import { postHandlers } from "./utils/postHandlers";
 export default function Home() {
   const { message, handleChange, handleSubmit } = messageHandlers();
   const { chats, printMessage, addUserMessage, addDerbyMessage } = chatlogHandlers();
-  const { checkConnection } = postHandlers();
+  const { checkConnection, postMessage } = postHandlers();
+
+  checkConnection();
 
   return (
     <div className={styles.page}>
@@ -32,7 +34,7 @@ export default function Home() {
           <form className={styles.messageForm} onSubmit={handleSubmit}>
             <input className={styles.messageInput} type="text" value={message} onChange={handleChange} placeholder="Message Derby"></input>
             <div className={styles.buttonContainer}>
-              <button onClick={() => addUserMessage(message)} className={styles.submitMessage} type="submit">&gt;</button>
+              <button onClick={() => postMessage(message)} className={styles.submitMessage} type="submit">&gt;</button>
             </div>
           </form>
         </div>
