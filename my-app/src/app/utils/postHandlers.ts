@@ -1,18 +1,17 @@
-import { useCallback, useEffect, useMemo } from 'react';
-import { chatlogHandlers } from "../utils/chatlogHandlers"
+import { useCallback, useEffect, useState, useMemo } from 'react';
+import { chatlogHandlers } from "../utils/chatlogHandlers";
 
 const BASE_URL = 'https://four-derby-ai-chatbot-backend.onrender.com';
 let chat: string = ""
 
 export function postHandlers(){
-    const { chats, printMessage, addUserMessage, addDerbyMessage } = chatlogHandlers();
-    // // const data = { Data: "Client Connection : Successful" };
-    // const data = useMemo(() => ({Data: "Client Connection : Successful" }),[]);
+    const { chats, addUserMessage, addDerbyMessage } = chatlogHandlers();
 
     const getConnection = useCallback(async () => {
         const data = { Data: "Client Connection : Successful" }; // Scoped inside function
-
+        const [loading, setLoading] = useState(false);
         try{
+            setLoading(true);
             const response = await fetch( BASE_URL + '/getNetworkConnection' ,{
                 method: 'POST',
                 headers: {
@@ -26,6 +25,7 @@ export function postHandlers(){
             }
             // Parse the JSON response
             const result = await response.json();
+
             // Handle the successful response
             console.log("Check Connection Success:", result);
         }
@@ -33,6 +33,7 @@ export function postHandlers(){
             console.error(`Error : ${error.message}`)
         }
         finally{
+            setLoading(false);
             console.log("Check Connection Complete")
         }
     },[]);
@@ -47,11 +48,12 @@ export function postHandlers(){
     let chat: string = useMemo(() => (""),[]);
     
     const postMessage = useCallback(async (message: string) => {
-
-        console.log(`chat : ${chat}`)
-        addUserMessage(message)
-        const data = {Message: message, Chat:chat }
+        // Render user's message into the chat
+        addUserMessage(message);
+        // Store user's messages to use as context and history for Ollama3 to reply with context and accuracy.
         chat += `\nUser : ${message}`;
+        // Format the message and chat context/history as an object to send as a post method
+        const data = { Message: message, Chat:chat }
         try{
             const response = await fetch ( BASE_URL + "/postMessage" , {
                 method: 'POST',
@@ -68,6 +70,8 @@ export function postHandlers(){
             const result = await response.json();
             // Handle the successful response
             console.log("Post Message Success:", result);
+            // Render the Ollama3 response into the chat
+            addDerbyMessage(result.message);
         }
         catch(error:any){
             console.error(error.message);
@@ -75,27 +79,7 @@ export function postHandlers(){
         finally{
             console.log("Message Processing Complete")
         }
-    },[]);
+    },[addDerbyMessage]);
 
-    const postOneMessage = async (message: string) => {
-        const data = {Message: message, Chat:chat }
-        chat += `\nUser : ${message}`;
-        try{
-            const response = await fetch ( BASE_URL + "/postMessage" , {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-        }
-        catch(error:any){
-            console.error(error.message);
-        }
-        finally{
-            console.log("Message Processing Complete")
-        }
-    }
-
-    return { checkConnection, postMessage }
+    return { chats, checkConnection, postMessage }
 }
