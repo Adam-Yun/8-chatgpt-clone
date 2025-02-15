@@ -9,9 +9,7 @@ export function postHandlers(){
 
     const getConnection = useCallback(async () => {
         const data = { Data: "Client Connection : Successful" }; // Scoped inside function
-        const [loading, setLoading] = useState(false);
         try{
-            setLoading(true);
             const response = await fetch( BASE_URL + '/getNetworkConnection' ,{
                 method: 'POST',
                 headers: {
@@ -33,7 +31,6 @@ export function postHandlers(){
             console.error(`Error : ${error.message}`)
         }
         finally{
-            setLoading(false);
             console.log("Check Connection Complete")
         }
     },[]);
