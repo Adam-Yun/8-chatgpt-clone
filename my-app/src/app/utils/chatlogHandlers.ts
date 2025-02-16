@@ -9,8 +9,6 @@ export function chatlogHandlers(){
             ...chats,
             {className: "userMessage", content: message},
         ]);
-        console.log(`addUserMessage Called -> Message : ${message}`);
-        console.log(`addUserMessage Called -> Chats : ${JSON.stringify(chats)}`);
     };
 
     const addDerbyMessage = (message: string) => {
@@ -18,8 +16,6 @@ export function chatlogHandlers(){
             ...chats,
             {className: "derbyMessage", content: message},
         ]);
-        console.log(`addDerbyMessage Called -> Message : ${message}`);
-        console.log(`addDerbyMessage Called -> Chats : ${JSON.stringify(chats)}`);
     };
 
     const printMessage = (message: string) => {

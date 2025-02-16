@@ -5,6 +5,9 @@ const BASE_URL = 'https://four-derby-ai-chatbot-backend.onrender.com';
 let chat: string = ""
 
 export function postHandlers(){
+    const [connectionLoading,setConnectionLoading] = useState(false);
+    const [messageLoading,setMessageLoading] = useState(false);
+        
     const { chats, addUserMessage, addDerbyMessage } = chatlogHandlers();
 
     const getConnection = useCallback(async () => {

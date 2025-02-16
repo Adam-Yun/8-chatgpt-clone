@@ -20,6 +20,9 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
+
+      <div className={styles.loading}></div>
+
       <main className={styles.main}>
         <div id="chatContainer" className={styles.chatContainer}>
           {chats.map((chat, index) => (
@@ -39,8 +42,12 @@ export default function Home() {
           </form>
         </div>
       </main>
+
       <footer className={styles.footer}>
+        <p className={styles.footerContent}>&copy; 2025 Adam Yun </p>
+        <p className={styles.footerContent}>Powered by Meta Ollama3 </p>
       </footer>
+
     </div>
   );
 }
