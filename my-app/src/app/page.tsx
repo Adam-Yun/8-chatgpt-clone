@@ -14,14 +14,19 @@ import { postHandlers } from "./utils/postHandlers";
 export default function Home() {
   const { message, handleChange, handleSubmit } = messageHandlers();
   const { printMessage, addUserMessage, addDerbyMessage } = chatlogHandlers();
-  const { chats, checkConnection, postMessage } = postHandlers();
+  const { chats, connectionLoading, messageLoading, checkConnection, postMessage } = postHandlers();
 
   checkConnection();
 
   return (
     <div className={styles.page}>
 
-      <div className={styles.loading}></div>
+      <div className={styles.loaderContainer}>
+        {connectionLoading ? 
+        <div className={styles.loader}>
+        </div> 
+        : null}
+      </div>
 
       <main className={styles.main}>
         <div id="chatContainer" className={styles.chatContainer}>

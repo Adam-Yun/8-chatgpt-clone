@@ -13,6 +13,7 @@ export function postHandlers(){
     const getConnection = useCallback(async () => {
         const data = { Data: "Client Connection : Successful" }; // Scoped inside function
         try{
+            setConnectionLoading(true);
             const response = await fetch( BASE_URL + '/getNetworkConnection' ,{
                 method: 'POST',
                 headers: {
@@ -31,9 +32,11 @@ export function postHandlers(){
             console.log("Check Connection Success:", result);
         }
         catch(error:any){
+            setConnectionLoading(false);
             console.error(`Error : ${error.message}`)
         }
         finally{
+            setConnectionLoading(false);
             console.log("Check Connection Complete")
         }
     },[]);
@@ -81,5 +84,5 @@ export function postHandlers(){
         }
     },[addDerbyMessage]);
 
-    return { chats, checkConnection, postMessage }
+    return { chats, connectionLoading, messageLoading, checkConnection, postMessage }
 }

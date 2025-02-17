@@ -16,14 +16,31 @@
   background-color: #222222;
 }
 
-.loading{
+.loaderContainer{
   position:absolute;
   grid-column: 1;
   grid-row: 1;
   margin:5px;
   width: 40px;        /* Forces the width to be 50px */
   height: 40px;      /* Forces the height to be 50px */
-  border:1px solid red;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  /* border:1px solid red; */
+}
+
+.loader{
+  border: 4px solid #f3f3f3; /* Light grey */
+  border-top: 4px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 50%;
+  height: 50%;
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .main{
