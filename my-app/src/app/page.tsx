@@ -49,8 +49,8 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
-        <p className={styles.footerContent}>&copy; 2025 Adam Yun </p>
-        <p className={styles.footerContent}>Powered by Meta Ollama3 </p>
+        <p className={styles.footerContent}>&copy; 2025 Adam</p>
+        <p className={styles.footerContent}>Powered by Meta Ollama3</p>
       </footer>
 
     </div>

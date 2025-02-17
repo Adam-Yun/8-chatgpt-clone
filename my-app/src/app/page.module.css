@@ -2,7 +2,8 @@
   margin:0;
   padding:0;
   box-sizing: border-box;
-  color:whitesmoke;
+  color:#DDDDDD;
+  /* color:#FFFFFF; */
 }
 
 .page{
@@ -47,7 +48,7 @@
   grid-column: 2 / 12;
   grid-row: 2;
   width:100%;
-  height:100%;
+  min-height:100%;
   padding:10px;
   display: flex;
   flex-direction: column;
@@ -130,10 +131,60 @@
 
 .chatContainer{
   width:100%;
-  height:100%;
+  flex-grow: 1;
   margin: 0 0 10px 0;
-  overflow:auto;
-  /* border:1px solid red; */
+  padding: 0 20px 10px 10px;
+  overflow: auto;
+  
+}
+
+.chatContainer::-webkit-scrollbar {
+  width: 8px; /* Adjust width as needed */
+}
+
+.chatContainer::-webkit-scrollbar-track {
+  background: transparent; /* Removes background */
+}
+
+.chatContainer::-webkit-scrollbar-thumb {
+  background: #444444; /* Keeps the thumb visible */
+  border-radius: 4px;
+}
+
+.userMessage{
+  width:100%;
+  min-height: min-content;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.userMessage p{
+  width:auto;
+  max-width: 600px;
+  min-height: 20px;
+  margin: 20px 0 0 0;
+  padding: 15px;
+  line-height: 1.5;
+  border-radius: 15px;
+  background-color: #444444;
+}
+
+.derbyMessage{
+  width:100%;
+  min-height: min-content;
+  line-height: 1.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.derbyMessage p{
+  width:100%;
+  min-height: 20px;
+  margin: 20px 0 0 0;
+  padding: 15px;
+  border-left: 5px solid #777777;
 }
 
 .footer{
@@ -147,4 +198,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.footer p{
+  font-size: 12px;
 }
