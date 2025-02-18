@@ -1,10 +1,10 @@
 "use client";
-
-import Image from "next/image";
+// import Image from "next/image";
 import styles from "./page.module.css";
 import { messageHandlers } from "../app/utils/messageHandlers";
 import { chatlogHandlers } from "../app/utils/chatlogHandlers";
 import { postHandlers } from "./utils/postHandlers";
+import { useEffect } from 'react';
 
 /**
  * Start Development Server:
@@ -14,13 +14,18 @@ import { postHandlers } from "./utils/postHandlers";
 export default function Home() {
   const { message, handleChange, handleSubmit } = messageHandlers();
   const { printMessage, addUserMessage, addDerbyMessage } = chatlogHandlers();
-  const { chats, connectionLoading, messageLoading, checkConnection, postMessage } = postHandlers();
+  const { chatlogs, connectionLoading, messageLoading, getConnection, postMessage } = postHandlers();
 
-  checkConnection();
+  // useEffect will now run once when the component mounts
+  useEffect(() => {
+      getConnection();
+  }, [getConnection]); // Empty dependency array ensures the effect runs only once
 
   return (
+    
     <div className={styles.page}>
-
+      {/* <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" /> */}
+      {/* <meta name="viewport" id="view" content="user-scalable=no, width=device-width, initial-scale=1.0" /> */}
       <div className={styles.loaderContainer}>
         {connectionLoading ? 
         <div className={styles.loader}>
@@ -30,7 +35,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <div id="chatContainer" className={styles.chatContainer}>
-          {chats.map((chat, index) => (
+          {chatlogs.map((chat, index) => (
             <div key={index} className={chat.className}>
               <p>
                 {chat.content}

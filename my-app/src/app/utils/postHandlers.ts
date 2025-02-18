@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useMemo } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import { chatlogHandlers } from "../utils/chatlogHandlers";
 
 const BASE_URL = 'https://four-derby-ai-chatbot-backend.onrender.com';
@@ -8,7 +8,7 @@ export function postHandlers(){
     const [connectionLoading,setConnectionLoading] = useState(false);
     const [messageLoading,setMessageLoading] = useState(false);
         
-    const { chats, addUserMessage, addDerbyMessage } = chatlogHandlers();
+    const { chatlogs, addUserMessage, addDerbyMessage } = chatlogHandlers();
 
     const getConnection = useCallback(async () => {
         const data = { Data: "Client Connection : Successful" }; // Scoped inside function
@@ -41,22 +41,25 @@ export function postHandlers(){
         }
     },[]);
 
-    const checkConnection = async () => {
-        // useEffect will now run once when the component mounts
-        useEffect(() => {
-            getConnection();
-        }, [getConnection]); // Empty dependency array ensures the effect runs only once
-    }
+    // const checkConnection = async () => {
+    //     // useEffect will now run once when the component mounts
+    //     useEffect(() => {
+    //         getConnection();
+    //     }, [getConnection]); // Empty dependency array ensures the effect runs only once
+    // }
 
     let chat: string = useMemo(() => (""),[]);
+    // const [chat, setChat] = useState("");
     
     const postMessage = useCallback(async (message: string) => {
         // Render user's message into the chat
         addUserMessage(message);
         // Store user's messages to use as context and history for Ollama3 to reply with context and accuracy.
         chat += `\nUser : ${message}`;
+        // setChat((prev) => prev + `\nUser: ${message}`);
         // Format the message and chat context/history as an object to send as a post method
         const data = { Message: message, Chat:chat }
+        console.log(`MESSAGE : ${message} | CHAT : ${JSON.stringify(data.Chat)}`);
         try{
             const response = await fetch ( BASE_URL + "/postMessage" , {
                 method: 'POST',
@@ -74,6 +77,8 @@ export function postHandlers(){
             // Handle the successful response
             console.log("Post Message Success:", result);
             // Render the Ollama3 response into the chat
+            // setChat((prev) => prev + `\nAI: ${message}`);
+            chat += `\nAI : ${result.message}`;
             addDerbyMessage(result.message);
         }
         catch(error:any){
@@ -82,7 +87,7 @@ export function postHandlers(){
         finally{
             console.log("Message Processing Complete")
         }
-    },[addDerbyMessage]);
+    },[chat, addDerbyMessage]);
 
-    return { chats, connectionLoading, messageLoading, checkConnection, postMessage }
+    return { chatlogs, connectionLoading, messageLoading, getConnection, postMessage }
 }

@@ -3,18 +3,18 @@ import { useState } from "react";
 
 export function chatlogHandlers(){
 
-    const [chats, setChats] = useState<{className:string; content: string}[]>([]);
+    const [chatlogs, setChatlogs] = useState<{className:string; content: string}[]>([]);
 
     const addUserMessage = (message: string) => {
-        setChats((chats) => [
-            ...chats,
+        setChatlogs((chatlogs) => [
+            ...chatlogs,
             {className: styles.userMessage , content: message},
         ]);
     };
 
     const addDerbyMessage = (message: string) => {
-        setChats((chats) => [
-            ...chats,
+        setChatlogs((chatlogs) => [
+            ...chatlogs,
             {className: styles.derbyMessage, content: message},
         ]);
     };
@@ -23,5 +23,5 @@ export function chatlogHandlers(){
         console.log(message);
     };
 
-    return { chats, printMessage, addUserMessage, addDerbyMessage };
+    return { chatlogs, printMessage, addUserMessage, addDerbyMessage };
 }
