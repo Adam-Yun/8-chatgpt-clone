@@ -21,6 +21,7 @@ export const metadata: Metadata = {
   description: "Ollama3 AI Assistant",
 };
 
+// We add suppressHrydrationWarning to html element to get rid of the hydratione error thrown at ios mobile opening this app in chrome
 export default function RootLayout({
   children,
 }: Readonly<{
