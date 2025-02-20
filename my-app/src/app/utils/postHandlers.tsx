@@ -1,4 +1,4 @@
-import { useCallback, useState, useMemo, use } from 'react';
+import { useCallback, useState } from 'react';
 import { chatlogHandlers } from "./chatlogHandlers";
 
 const BASE_URL = 'https://four-derby-ai-chatbot-backend.onrender.com';
@@ -7,7 +7,6 @@ export function postHandlers(){
     const [connectionIncomplete, setConnectionIncomplete] = useState(true);
     const [connectionLoading,setConnectionLoading] = useState(false);
     const [connectionComplete,setConnectionComplete] = useState(false);
-    const [messageLoading,setMessageLoading] = useState(false);
         
     const { chatlogs, addUserMessage, addDerbyMessage } = chatlogHandlers();
 
@@ -87,5 +86,5 @@ export function postHandlers(){
         }
     }, [chat, addDerbyMessage]);
 
-    return { chatlogs, connectionIncomplete, connectionLoading, connectionComplete, messageLoading, getConnection, postMessage }
+    return { chatlogs, connectionIncomplete, connectionLoading, connectionComplete, getConnection, postMessage }
 }

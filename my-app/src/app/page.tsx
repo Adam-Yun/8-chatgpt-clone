@@ -2,7 +2,6 @@
 
 import styles from "./page.module.css";
 import { messageHandlers } from "../app/utils/messageHandlers";
-import { chatlogHandlers } from "../app/utils/chatlogHandlers";
 import { postHandlers } from "./utils/postHandlers";
 import { useState, useEffect } from "react";
 
@@ -13,28 +12,27 @@ import { useState, useEffect } from "react";
 
 export default function Home() {
   const { message, handleChange, handleSubmit } = messageHandlers();
-  const { printMessage, addUserMessage, addDerbyMessage } = chatlogHandlers();
-  const { chatlogs, connectionIncomplete, connectionLoading, connectionComplete, messageLoading, getConnection, postMessage } = postHandlers();
+  const { chatlogs, connectionIncomplete, connectionLoading, connectionComplete, getConnection, postMessage } = postHandlers();
 
     // Track if the component is mounted (client-side)
-    // const [mounted, setMounted] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
-    // useEffect(() => {
-    //   setMounted(true);  // This ensures the component runs only on the client
-    //   getConnection();
-    // }, [getConnection]);
+    useEffect(() => {
+      setMounted(true);  // This ensures the component runs only on the client
+      getConnection();
+    }, [getConnection]);
 
     // Prevents the JSX from being rendered on server-side. 
     // Only renders when useEffect is called and that is 
     // when all components are mounted on client side 
     // then useEffect is called and mounted becomes true and jsx is rendered
     // Prevent server-side rendering mismatch
-    // if (!mounted) return null;
+    if (!mounted) return null;
  
   return (
     <div className={styles.page}>
 
-      {/* <div className={styles.loaderContainer}>
+      <div className={styles.loaderContainer}>
         {connectionIncomplete ? 
         <div className={styles.notConnected}>
         </div> 
@@ -47,7 +45,7 @@ export default function Home() {
         <div className={styles.connected}>
         </div> 
         : null}
-      </div> */}
+      </div>
 
       <main className={styles.main}>
         <div id="chatContainer" className={styles.chatContainer}>

@@ -19,9 +19,5 @@ export function chatlogHandlers(){
         ]);
     };
 
-    const printMessage = (message: string) => {
-        console.log(message);
-    };
-
-    return { chatlogs, printMessage, addUserMessage, addDerbyMessage };
+    return { chatlogs, addUserMessage, addDerbyMessage };
 }
