@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 export default function Home() {
   const { message, handleChange, handleSubmit } = messageHandlers();
   const { printMessage, addUserMessage, addDerbyMessage } = chatlogHandlers();
-  const { chatlogs, connectionLoading, messageLoading, getConnection, postMessage } = postHandlers();
+  const { chatlogs, connectionIncomplete, connectionLoading, connectionComplete, messageLoading, getConnection, postMessage } = postHandlers();
 
     // Track if the component is mounted (client-side)
     const [mounted, setMounted] = useState(false);
@@ -35,8 +35,16 @@ export default function Home() {
     <div className={styles.page}>
 
       <div className={styles.loaderContainer}>
+        {connectionIncomplete ? 
+        <div className={styles.notConnected}>
+        </div> 
+        : null}
         {connectionLoading ? 
         <div className={styles.loader}>
+        </div> 
+        : null}
+        {connectionComplete ? 
+        <div className={styles.connected}>
         </div> 
         : null}
       </div>

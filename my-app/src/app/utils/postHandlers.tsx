@@ -4,7 +4,9 @@ import { chatlogHandlers } from "./chatlogHandlers";
 const BASE_URL = 'https://four-derby-ai-chatbot-backend.onrender.com';
 
 export function postHandlers(){
+    const [connectionIncomplete, setConnectionIncomplete] = useState(true);
     const [connectionLoading,setConnectionLoading] = useState(false);
+    const [connectionComplete,setConnectionComplete] = useState(false);
     const [messageLoading,setMessageLoading] = useState(false);
         
     const { chatlogs, addUserMessage, addDerbyMessage } = chatlogHandlers();
@@ -12,6 +14,7 @@ export function postHandlers(){
     const getConnection = useCallback(async () => {
         const data = { Data: "Client Connection : Successful" }; // Scoped inside function
         try{
+            setConnectionIncomplete(false);
             setConnectionLoading(true);
             const response = await fetch( BASE_URL + '/getNetworkConnection' ,{
                 method: 'POST',
@@ -32,11 +35,15 @@ export function postHandlers(){
         }
         catch(error:any){
             setConnectionLoading(false);
-            console.error(`Error : ${error.message}`)
+            setConnectionComplete(false);
+            console.error(`Error : ${error.message}`);
+            setConnectionIncomplete(true);
         }
         finally{
+            setConnectionIncomplete(false);
             setConnectionLoading(false);
             console.log("Check Connection Complete")
+            setConnectionComplete(true);
         }
     },[]);
 
@@ -80,5 +87,5 @@ export function postHandlers(){
         }
     }, [chat, addDerbyMessage]);
 
-    return { chatlogs, connectionLoading, messageLoading, getConnection, postMessage }
+    return { chatlogs, connectionIncomplete, connectionLoading, connectionComplete, messageLoading, getConnection, postMessage }
 }
