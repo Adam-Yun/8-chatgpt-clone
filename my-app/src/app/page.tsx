@@ -1,8 +1,8 @@
 "use client";
 
 import styles from "./page.module.css";
-import { messageHandlers } from "../app/utils/messageHandlers";
-import { postHandlers } from "./utils/postHandlers";
+import { useMessageHandlers } from "../app/utils/messageHandlers";
+import { usePostHandlers } from "./utils/postHandlers";
 import { useState, useEffect } from "react";
 
 /**
@@ -11,8 +11,14 @@ import { useState, useEffect } from "react";
  */
 
 export default function Home() {
-  const { message, handleChange, handleSubmit } = messageHandlers();
-  const { chatlogs, connectionIncomplete, connectionLoading, connectionComplete, getConnection, postMessage } = postHandlers();
+  const { message, handleChange, handleSubmit } = useMessageHandlers();
+  const {
+    connectionIncomplete, 
+    connectionLoading,
+    connectionComplete,
+    chatlogs,
+    getConnection, postMessage,
+  } = usePostHandlers();
 
     // Track if the component is mounted (client-side)
     const [mounted, setMounted] = useState(false);

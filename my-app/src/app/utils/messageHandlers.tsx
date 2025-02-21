@@ -4,7 +4,7 @@ import { useState } from "react";
 type e = React.ChangeEvent<HTMLInputElement>;
 type f = React.FormEvent<HTMLFormElement>;
   
-export function messageHandlers(){
+export function useMessageHandlers(){
 
     const [message, setMessage] = useState("");
 
@@ -17,5 +17,5 @@ export function messageHandlers(){
         setMessage("");
     }
 
-    return { message, handleChange, handleSubmit };
+    return { message, setMessage, handleChange, handleSubmit };
 }

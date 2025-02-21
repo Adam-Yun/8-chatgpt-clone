@@ -1,7 +1,7 @@
 import styles from "../page.module.css";
 import { useState } from "react";
 
-export function chatlogHandlers(){
+export function useChatlogHandlers(){
 
     const [chatlogs, setChatlogs] = useState<{className:string; content: string}[]>([]);
 
@@ -19,5 +19,5 @@ export function chatlogHandlers(){
         ]);
     };
 
-    return { chatlogs, addUserMessage, addDerbyMessage };
+    return { chatlogs, setChatlogs, addUserMessage, addDerbyMessage };
 }

@@ -1,14 +1,14 @@
 import { useCallback, useState } from 'react';
-import { chatlogHandlers } from "./chatlogHandlers";
+import { useChatlogHandlers } from "./chatlogHandlers";
 
 const BASE_URL = 'https://four-derby-ai-chatbot-backend.onrender.com';
 
-export function postHandlers(){
+export function usePostHandlers(){
     const [connectionIncomplete, setConnectionIncomplete] = useState(true);
     const [connectionLoading,setConnectionLoading] = useState(false);
-    const [connectionComplete,setConnectionComplete] = useState(false);
-        
-    const { chatlogs, addUserMessage, addDerbyMessage } = chatlogHandlers();
+    const [connectionComplete,setConnectionComplete] = useState(false); 
+    const [chat, setChat] = useState("");
+    const { chatlogs, addUserMessage, addDerbyMessage } = useChatlogHandlers();
 
     const getConnection = useCallback(async () => {
         const data = { Data: "Client Connection : Successful" }; // Scoped inside function
@@ -28,15 +28,22 @@ export function postHandlers(){
             }
             // Parse the JSON response
             const result = await response.json();
-
             // Handle the successful response
             console.log("Check Connection Success:", result);
         }
-        catch(error:any){
-            setConnectionLoading(false);
-            setConnectionComplete(false);
-            console.error(`Error : ${error.message}`);
-            setConnectionIncomplete(true);
+        catch(error:unknown){
+
+            if (error instanceof Error) {
+                console.error(`Error : ${error.message}`);
+                setConnectionLoading(false);
+                setConnectionComplete(false);
+                setConnectionIncomplete(true);
+            } else {
+                console.error("An unknown error occurred", error);
+                setConnectionLoading(false);
+                setConnectionComplete(false);
+                setConnectionIncomplete(true);
+            }
         }
         finally{
             setConnectionIncomplete(false);
@@ -45,8 +52,6 @@ export function postHandlers(){
             setConnectionComplete(true);
         }
     },[]);
-
-    const [chat, setChat] = useState("");
 
     const postMessage = useCallback(async (message: string) => {
         try {
@@ -57,7 +62,7 @@ export function postHandlers(){
             setChat(updatedChat);  // Update state immediately
             
             // Prepare data for API request
-            let data = { Message: message, Chat: updatedChat };
+            const data = { Message: message, Chat: updatedChat };
             console.log(`CHECKING CHAT: ${updatedChat}`);
 
             // Fetch request with the correct chat history
@@ -78,13 +83,24 @@ export function postHandlers(){
             setChat(prevChat => prevChat + "\nAI : " + result.message);
             addDerbyMessage(result.message);
         } 
-        catch (error: any) {
-            console.error(error.message);
+        catch (error: unknown) {
+            if (error instanceof Error) {
+                console.error(error.message);
+            } else {
+                console.error("An unknown error occurred", error);
+            }
         } 
         finally {
             console.log("Message Processing Complete");
         }
     }, [chat, addDerbyMessage]);
 
-    return { chatlogs, connectionIncomplete, connectionLoading, connectionComplete, getConnection, postMessage }
+    return {
+        connectionIncomplete, setConnectionIncomplete, 
+        connectionLoading, setConnectionLoading,
+        connectionComplete, setConnectionComplete,
+        chat, setChat,
+        chatlogs, addUserMessage, addDerbyMessage,
+        getConnection, postMessage
+    }
 }
